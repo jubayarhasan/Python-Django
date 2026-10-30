@@ -23,6 +23,11 @@ class Blog(models.Model):
         ('0', "DRAFT"),
         ('1', "PUBLISH"),
     )
+    SECTION ={
+        ('Recent', 'Recent'),
+        ('Publish', 'Publish'),
+        ('Treading', 'Treading')
+    }
 
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
@@ -31,6 +36,9 @@ class Blog(models.Model):
     category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
     blog_slug = AutoSlugField(populate_from="title", unique=True, null=True, default=None)
     date = models.DateField(auto_now_add=True)
+    status = models.CharField(choices=STATUS, max_length=1, default=0)
+    section = models.CharField(choices=SECTION, max_length=100)
+    Main_post = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return self.title
+        return f"{self.title} ({self.category})"
